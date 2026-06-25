@@ -1,5 +1,7 @@
 # Rate My Class
 
+https://rate-myclass.netlify.app/
+
 ## Project Description
 
 Rate My Class is a web application where students can post reviews and ratings of CSE and WDD classes offered at BYU-Idaho.
