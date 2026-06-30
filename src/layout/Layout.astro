@@ -1,0 +1,21 @@
+---
+import "../css/style.css";
+import Header from "../components/Header.svelte";
+import Footer from "../components/Footer.svelte";
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Rate My Class</title>
+	</head>
+    <Header client:load />
+	<body>
+		<h1>Rate My Class</h1>
+	</body>
+    <Footer client:load />
+</html>
