@@ -1,0 +1,1 @@
+<footer>&copy; Spring 2026 Rate My Class</footer>
