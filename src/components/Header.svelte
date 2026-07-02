@@ -16,7 +16,7 @@
     </label>
     <input type="checkbox" id="menu-toggle">
     <nav class="menu-right">
-        <a href="#">Login</a>
-        <a href="#">Sign Up</a>
+        <a href="/login">Login</a>
+        <a href="/register">Sign Up</a>
     </nav>
 </header>
