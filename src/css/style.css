@@ -133,6 +133,9 @@ header {
         }
     }
 }
+h2 {
+    text-align: center;
+}
 
 footer {
     align-items: center;

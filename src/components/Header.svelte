@@ -22,8 +22,8 @@
             <img src="../../hamburger-menu-svgrepo-com.svg" alt="Hamburger menu">
         </button>
         <nav class="nav-right" class:open={isOpen}>
-            <a href="#">Login</a>
-            <a href="#">Sign Up</a>
+            <a href="/login">Login</a>
+            <a href="/signup">Sign Up</a>
         </nav>
     </div>
 </header>
