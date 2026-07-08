@@ -15,7 +15,7 @@ async function register(name:string, username:string, major:string, email:string
     if (!res.ok) {
         throw new Error(data.error.message);
     }
-    login(email, password);
+
 }
 
 async function login(email:string, password:string){

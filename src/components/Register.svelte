@@ -15,7 +15,7 @@
     let confirmPassword =$state("");
     let email = $state("");
     let major =$state("");
-    let redirectPath = '/';
+    let redirectPath = '/dashboard';
     
     //UI field state
     let errors: FormErrors = $state({});
@@ -32,7 +32,7 @@
         if (!username.trim()) newErrors.username = "Username is required.";
 
         // check length
-        if (name.trim().length < 3 || name.trim().length > 20) newErrors.name = 'Name has to be between 3-20 characters.'
+        if (name.trim() &&  name.trim().length < 3 || name.trim().length > 20) newErrors.name = 'Name has to be between 3-20 characters.'
 
         // Email regex check
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,8 +65,8 @@
         if (hasSubmittedAtLeastOnce) {
             await validateForm();
         }
-    }
-;
+    };
+
     async function registerHandler(event: Event) {
         event.preventDefault(); 
         hasSubmittedAtLeastOnce = true;
@@ -82,9 +82,16 @@
             const res = await authSvelte.register(name, username, major, email, password);
             await new Promise((resolve) => setTimeout(resolve, 1500));
             console.log("Registration successful!", res);
-            onSuccess(redirectPath)
-
             isSuccess = true;
+            try {
+                await authSvelte.login(email, password);
+                onSuccess(redirectPath);
+            } catch (loginError: any) {
+                console.log("failed to login after registration: ", loginError)
+                redirectPath = '/login'
+                onSuccess(redirectPath)
+            }
+            
             name ="";
             username = "";
             password = "";
@@ -92,9 +99,10 @@
             email = "";
             major = "";
 
-        } catch (error: any) {
-            console.log("Registration failed: ", error);
-            errorMessage = error.message;
+
+        } catch (registrationError: any) {
+            console.log("Registration failed: ", registrationError);
+            errorMessage = registrationError.message;
         } finally {
             isSubmitting = false;
         }
