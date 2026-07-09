@@ -19,13 +19,11 @@
     let isBlock = $state(false);
     let selectedYear = $state("");
     let rating = $state("");
-    let grade = $state("");
+    let gradeReceived = $state("");
     let difficulty = $state("");
-    let classType = $state("");
+    let type = $state("");
     let isRecommended = $state(false);
     let description = $state("");
-
-    const classCodeRegex = /^[A-Za-z]{2,5}\d{3}$/;
 
     //UI field state
     let errors: ReviewErrors = $state({});
@@ -34,55 +32,73 @@
     let isSuccess = $state(false);
 
     function validate() {
-    errors = {};
+        errors = {};
 
-    if (!classCode.trim()) {
-        errors.classCode = "Class code is required.";
-    } else if (!classCodeRegex.test(classCode.trim().toUpperCase())) {
-    errors.classCode =
-        "Enter a valid class code (e.g. CSE210 or CS123).";
+        const classCodeRegex = /^[A-Za-z]{2,5}\d{3}$/;
+
+        if (!classCode.trim()) {
+            errors.classCode = "Class code is required.";
+        } else if (!classCodeRegex.test(classCode.trim().toUpperCase())) {
+            errors.classCode =
+                "Enter a valid class code (e.g. CSE210 or CS123).";
+        }
+
+        if (!className.trim()) {
+            errors.className = "Class name is required.";
+        } else if (className.trim().length < 3) {
+            errors.className = "Class name is too short.";
+        }
+
+        if (!professor.trim()) {
+            errors.professor = "Professor is required.";
+        }
+
+        if (!semester) {
+            errors.semester = "Please select a semester.";
+        }
+
+        if (!selectedYear) {
+            errors.year = "Please select a year.";
+        }
+
+        if (!rating) {
+            errors.rating = "Please choose a rating.";
+        }
+
+        if (!gradeReceived) {
+            errors.gradeReceived = "Please select a grade.";
+        }
+
+        if (!difficulty) {
+            errors.difficulty = "Please select a difficulty.";
+        }
+
+        if (!type) {
+            errors.type = "Please select a class type.";
+        }
+
+        const trimmedDescription = description.trim();
+
+        if (!trimmedDescription) {
+            errors.description = "Please write a description.";
+        } else if (trimmedDescription.length < 20) {
+            errors.description = "Description must be at least 20 characters.";
+        } else if (trimmedDescription.length > 2000) {
+            errors.description = "Description must be less than 2000 characters.";
+        }
+
+        return Object.keys(errors).length === 0;
     }
 
-    if (!className.trim()) {
-        errors.className = "Class name is required.";
-    } else if (className.trim().length < 3) {
-        errors.className = "Class name is too short.";
+    function handleSubmit(event: SubmitEvent) {
+        if (!validate()) {
+            event.preventDefault();
+        }
     }
-
-    if (!professor.trim()) {
-        errors.professor = "Professor is required.";
-    }
-
-    if (!semester) {
-        errors.semester = "Please select a semester.";
-    }
-
-    if (!selectedYear) {
-        errors.year = "Please select a year.";
-    }
-
-    if (!rating) {
-        errors.rating = "Please choose a rating.";
-    }
-
-    if (!grade) {
-        errors.grade = "Please select a grade.";
-    }
-
-    if (!difficulty) {
-        errors.difficulty = "Please select a difficulty.";
-    }
-
-    if (description.trim().length < 20) {
-        errors.description = "Review must be at least 20 characters.";
-    }
-
-    return Object.keys(errors).length === 0;
-}
 
 </script>
 
-<form class="review-form" action="/submit-review" method="POST">
+<form class="review-form" action="/submit-review" method="POST" onsubmit={handleSubmit}>
     <label>
         Class Code:
         <input type="text" name="classCode" bind:value={classCode} required />
@@ -135,7 +151,7 @@
     </label>
     <label>
         Grade:
-        <select bind:value={grade} required>
+        <select bind:value={gradeReceived} required>
             <option value="">Select grade</option>
             <option value="A">A</option>
             <option value="A-">A-</option>
@@ -166,7 +182,7 @@
     </label>
     <label>
         Online:
-        <select name="classType" id="classType" bind:value={classType} required>
+        <select name="classType" id="classType" bind:value={type} required>
             <option value="">Select class type</option>
             <option value="In-Person">In-Person</option>
             <option value="Online">Online</option>
