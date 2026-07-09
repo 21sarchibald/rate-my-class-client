@@ -4,7 +4,7 @@
     import { setLocalStorage, getParam } from '../js/utils.mts';
 
 // what is this?  We give the option to pass a function into our login component that will get called on a successful login. If no function is passed it defaults to one that will redirect the user to another page (like Home).
-let { onSuccess = (path) => { window.location.href = path;} } = $props<{
+let { onSuccess = (path:string) => { window.location.href = path;} } = $props<{
     onSuccess?: (data: { email: string }) => void;
 }>();
 

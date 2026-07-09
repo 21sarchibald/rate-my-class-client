@@ -5,7 +5,20 @@ const baseURL = import.meta.env.PUBLIC_SERVER_URL;
 
 const userStore = $state({isLoggedIn: false, user: {}, token: ""}) as UserStore;
 
-async function login(email, password){
+async function register(name:string, username:string, major:string, email:string, password:string) {
+    const res = await fetch(`${baseURL}users/register`, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({name, username, major, email, password})
+    })
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.error.message);
+    }
+
+}
+
+async function login(email:string, password:string){
     const response = await fetch(`${baseURL}users/login`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
@@ -47,4 +60,4 @@ function checkAuth(){
 
 }
 
-export default { userStore, login, logout, checkAuth };
+export default { userStore, register, login, logout, checkAuth };

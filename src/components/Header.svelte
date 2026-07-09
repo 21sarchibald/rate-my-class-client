@@ -1,5 +1,10 @@
 <script lang="ts">
 
+    let isOpen = false
+    function handleHamburgurToggle() {
+        isOpen = !isOpen;
+
+    }
 </script>
 
 <header>
@@ -9,14 +14,16 @@
     </div>
     <div class="search">
         <input type="text">
-        <img src="../../search-icon.svg" alt="Search button">
+        <img class="search-btn" src="../../search-icon.svg" alt="Search button">
     </div>
-    <label for="menu-toggle" class="hamburger-menu hide">
-        <img src="../../hamburger-menu-svgrepo-com.svg" alt="Hamburger menu">
-    </label>
-    <input type="checkbox" id="menu-toggle">
-    <nav class="menu-right">
-        <a href="/login">Login</a>
-        <a href="/register">Sign Up</a>
-    </nav>
+    <div class="menu-right">
+
+        <button class="hamburger-menu" onclick={handleHamburgurToggle}>
+            <img src="../../hamburger-menu-svgrepo-com.svg" alt="Hamburger menu">
+        </button>
+        <nav class="nav-right" class:open={isOpen}>
+            <a href="/login">Login</a>
+            <a href="/signup">Sign Up</a>
+        </nav>
+    </div>
 </header>
