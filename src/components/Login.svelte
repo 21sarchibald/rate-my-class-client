@@ -3,47 +3,47 @@
     import  auth  from '../js/auth.svelte.ts';
     import { setLocalStorage, getParam } from '../js/utils.mts';
 
-// what is this?  We give the option to pass a function into our login component that will get called on a successful login. If no function is passed it defaults to one that will redirect the user to another page (like Home).
-let { onSuccess = (path:string) => { window.location.href = path;} } = $props<{
-    onSuccess?: (data: { email: string }) => void;
-}>();
+  // what is this?  We give the option to pass a function into our login component that will get called on a successful login. If no function is passed it defaults to one that will redirect the user to another page (like Home).
+  let { onSuccess = (path:string) => { window.location.href = path;} } = $props<{
+      onSuccess?: (data: { email: string }) => void;
+  }>();
 
-let email = $state("user@example.com");
-let password = $state("");
-let errorMessage = $state("");
-let redirectPath = '/';
+  let email = $state("");
+  let password = $state("");
+  let errorMessage = $state("");
+  let redirectPath = '/';
 
-async function loginHandler(event: Event) {
-    event.preventDefault();
-    errorMessage = "";
-    // Handle login logic here
+  async function loginHandler(event: Event) {
+      event.preventDefault();
+      errorMessage = "";
+      // Handle login logic here
 
-    try{
-        console.log("Attempting login for:", email);
-        const response = await auth.login(email, password);
-        console.log("Login successful!", response);
-        onSuccess(redirectPath);
-        
-    }
-    catch(error: any){
-        console.log("Login handler caught an error:", error);
-        errorMessage = error.message;
-    }
+      try{
+          console.log("Attempting login for:", email);
+          const response = await auth.login(email, password);
+          console.log("Login successful!", response);
+          onSuccess(redirectPath);
+          
+      }
+      catch(error: any){
+          console.log("Login handler caught an error:", error);
+          errorMessage = error.message;
+      }
 
-}
-
-onMount(() => {
-  // we added the getParam function to utils in Team 5
-  const param = getParam("redirect");
-  if (param) {
-    // if the redirect param exists use that
-    redirectPath = param;
-  } else if (document.referrer != window.location.href) {
-    // otherwise send back to the referring page if set
-    redirectPath = document.referrer;
   }
-  // otherwise redirectPath will stay "/" (send home)
-});
+
+  onMount(() => {
+    // we added the getParam function to utils in Team 5
+    const param = getParam("redirect");
+    if (param) {
+      // if the redirect param exists use that
+      redirectPath = param;
+    } else if (document.referrer != window.location.href) {
+      // otherwise send back to the referring page if set
+      redirectPath = document.referrer;
+    }
+    // otherwise redirectPath will stay "/" (send home)
+  });
 
 </script>
 
@@ -54,7 +54,7 @@ onMount(() => {
 <form onsubmit={loginHandler} class="login-form">
   <label>
     Email:
-    <input type="email" bind:value={email} required />
+    <input type="email" bind:value={email} placeholder="example@example.com" required />
   </label>
   <label>
     Password:
