@@ -12,7 +12,7 @@
 
     let selectedYear = "";
 
-    let
+    let classCode = $state("");
 
     //UI field state
     let errors: FormErrors = $state({});
