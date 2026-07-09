@@ -25,3 +25,37 @@ export interface FormErrors {
     password?:string 
     confirmPassword?: string
 }
+
+export interface Review {
+  classCode: string;
+  className: string;
+  professor: string;
+  semester: "Winter" | "Spring" | "Summer" | "Fall";
+  isBlock: boolean;
+  year: number;
+  rating: number;
+  gradeReceived: "A" | "A-" | "B+" | "B" | "B-" | "C+" | "C" | "C-" | "D+" | "D" | "D-" | "F" | "P" | "W";
+  difficulty: number;
+  type: "online" | "in-person" | "hybrid";
+  isRecommended: boolean;
+  description: string;
+  likes: number;
+  dislikes: number;
+  createdAt: Date;
+  modifiedAt: Date;
+}
+
+export interface ReviewErrors {
+  classCode?: string;
+  className?: string;
+  professor?: string;
+  semester?: string;
+  isBlock?: string;
+  year?: string;
+  rating?: string;
+  gradeReceived?: string;
+  difficulty?: string;
+  isRecommended?: string;
+  type?: string;
+  description?: string;
+}

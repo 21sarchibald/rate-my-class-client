@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import authSvelte from "../js/auth.svelte";
     import { getParam } from '../js/utils.mts';
-    import type { FormErrors } from "../js/types.mts";
+    import type { ReviewErrors } from "../js/types.mts";
     const currentYear = new Date().getFullYear();
 
     const years = Array.from(
@@ -10,84 +10,105 @@
         (_, i) => currentYear - 5 + i
     );
 
-    let selectedYear = "";
+
 
     let classCode = $state("");
+    let className = $state("");
+    let professor = $state("");
+    let semester = $state("");
+    let isBlock = $state(false);
+    let selectedYear = $state("");
+    let rating = $state("");
+    let grade = $state("");
+    let difficulty = $state("");
+    let classType = $state("");
+    let isRecommended = $state(false);
+    let description = $state("");
+
+    const classCodeRegex = /^[A-Za-z]{2,5}\d{3}$/;
 
     //UI field state
-    let errors: FormErrors = $state({});
+    let errors: ReviewErrors = $state({});
     let errorMessage = $state("");
     let isSubmitting = $state(false);
     let isSuccess = $state(false);
 
-    async function validateForm() {
-        const newErrors: FormErrors = {}
+    function validate() {
+    errors = {};
 
-        // check name, major, username
-        if (!name.trim()) newErrors.name = 'Name is requried.';
-        if (!major.trim()) newErrors.major = 'Major is required';
-        if (!username.trim()) newErrors.username = "Username is required.";
-
-        // check length
-        if (name.trim() &&  name.trim().length < 3 || name.trim().length > 20) newErrors.name = 'Name has to be between 3-20 characters.'
-
-        // Email regex check
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email) {
-            newErrors.email = 'Email is required.';
-        } else if (!emailRegex.test(email)) {
-            newErrors.email = 'Please enter a valid email address.';
-        }
-
-        // Password strength check
-        if (!password) {
-            newErrors.password = 'Password is required.';
-        } else if (password.length < 8) {
-            newErrors.password = 'Password must be at least 8 characters long.';
-        }
-
-        if (confirmPassword !== password) {
-            newErrors.confirmPassword = 'Passwords do not match.';
-        }
-
-        errors = newErrors;
-        // If errors object has no key, form is valid!
-        return Object.keys(errors).length === 0;
-
+    if (!classCode.trim()) {
+        errors.classCode = "Class code is required.";
+    } else if (!classCodeRegex.test(classCode.trim().toUpperCase())) {
+    errors.classCode =
+        "Enter a valid class code (e.g. CSE210 or CS123).";
     }
 
-    let hasSubmittedAtLeastOnce = $state(false);
+    if (!className.trim()) {
+        errors.className = "Class name is required.";
+    } else if (className.trim().length < 3) {
+        errors.className = "Class name is too short.";
+    }
 
-    async function handleInput() {
-        if (hasSubmittedAtLeastOnce) {
-            await validateForm();
-        }
-    };
+    if (!professor.trim()) {
+        errors.professor = "Professor is required.";
+    }
+
+    if (!semester) {
+        errors.semester = "Please select a semester.";
+    }
+
+    if (!selectedYear) {
+        errors.year = "Please select a year.";
+    }
+
+    if (!rating) {
+        errors.rating = "Please choose a rating.";
+    }
+
+    if (!grade) {
+        errors.grade = "Please select a grade.";
+    }
+
+    if (!difficulty) {
+        errors.difficulty = "Please select a difficulty.";
+    }
+
+    if (description.trim().length < 20) {
+        errors.description = "Review must be at least 20 characters.";
+    }
+
+    return Object.keys(errors).length === 0;
+}
+
 </script>
 
 <form class="review-form" action="/submit-review" method="POST">
     <label>
         Class Code:
-        <input type="text" required />
+        <input type="text" name="classCode" bind:value={classCode} required />
     </label>
     <label>
         Class Name:
-        <input type="text" required />
+        <input type="text" name="className" bind:value={className} required />
     </label>
     <label>
         Professor:
-        <input type="text" required />
+        <input type="text" name="professor" bind:value={professor} required />
     </label>
     <label>
         Semester:
-        <input type="radio" name="semester" value="Fall" required />
+        <input type="radio" name="semester" value="Fall" bind:group={semester} required />
         <label for="fall">Fall</label>
-        <input type="radio" name="semester" value="Winter" required />
+        <input type="radio" name="semester" value="Winter" bind:group={semester} required />
         <label for="winter">Winter</label>
-        <input type="radio" name="semester" value="Spring" required />
+        <input type="radio" name="semester" value="Spring" bind:group={semester} required />
         <label for="spring">Spring</label>
-        <input type="radio" name="semester" value="Summer" required />
+        <input type="radio" name="semester" value="Summer" bind:group={semester} required />
         <label for="summer">Summer</label>
+    </label>
+    <label>
+        Block:
+        <input type="checkbox" name="isBlock" bind:checked={isBlock} />
     </label>
     <label>
         Year:
@@ -101,24 +122,40 @@
     </label>
     <label>
         Rating:
-        <input type="radio" name="rating" value="1" required />
+        <input type="radio" name="rating" value="1" bind:group={rating} required />
         <label for="1">1</label>
-        <input type="radio" name="rating" value="2" required />
+        <input type="radio" name="rating" value="2" bind:group={rating} required />
         <label for="2">2</label>
-        <input type="radio" name="rating" value="3" required />
+        <input type="radio" name="rating" value="3" bind:group={rating} required />
         <label for="3">3</label>
-        <input type="radio" name="rating" value="4" required />
+        <input type="radio" name="rating" value="4" bind:group={rating} required />
         <label for="4">4</label>
-        <input type="radio" name="rating" value="5" required />
+        <input type="radio" name="rating" value="5" bind:group={rating} required />
         <label for="5">5</label>
     </label>
     <label>
         Grade:
-        <input type="text" name="grade" required />
+        <select bind:value={grade} required>
+            <option value="">Select grade</option>
+            <option value="A">A</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B">B</option>
+            <option value="B-">B-</option>
+            <option value="C+">C+</option>
+            <option value="C">C</option>
+            <option value="C-">C-</option>
+            <option value="D+">D+</option>
+            <option value="D">D</option>
+            <option value="D-">D-</option>
+            <option value="F">F</option>
+            <option value="P">P</option>
+            <option value="W">W</option>
+</select>
     </label>
     <label>
         Difficulty:
-        <select name="difficulty" id="difficulty" required>
+        <select name="difficulty" id="difficulty" bind:value={difficulty} required>
             <option value="">Select difficulty</option>
             <option value="Easy">1</option>
             <option value="Moderate">2</option>
@@ -129,15 +166,20 @@
     </label>
     <label>
         Online:
-        <input type="checkbox" name="online" />
+        <select name="classType" id="classType" bind:value={classType} required>
+            <option value="">Select class type</option>
+            <option value="In-Person">In-Person</option>
+            <option value="Online">Online</option>
+            <option value="Hybrid">Hybrid</option>
+        </select>
     </label>
     <label>
         Recommend:
-        <input type="checkbox" name="recommend" />
+        <input type="checkbox" name="recommend" bind:checked={isRecommended} />
     </label>
     <label>
-        Review:
-        <input type="textarea" name="review" required/>
+        Description:
+        <textarea name="description" bind:value={description} placeholder="Tell other students about your experience..." required></textarea>
     </label>
     
     <button type="submit">Submit</button>
