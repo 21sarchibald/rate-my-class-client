@@ -95,6 +95,7 @@
     function handleSubmit(event: SubmitEvent) {
         event.preventDefault();
         if (!validate()) {
+            
         }
     }
 
