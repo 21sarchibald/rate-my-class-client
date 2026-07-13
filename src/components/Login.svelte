@@ -3,7 +3,6 @@
     import  auth  from '../js/auth.svelte.ts';
     import { setLocalStorage, getParam } from '../js/utils.mts';
 
-  // what is this?  We give the option to pass a function into our login component that will get called on a successful login. If no function is passed it defaults to one that will redirect the user to another page (like Home).
   let { onSuccess = (path:string) => { window.location.href = path;} } = $props<{
       onSuccess?: (data: { email: string }) => void;
   }>();
@@ -19,15 +18,15 @@
       // Handle login logic here
 
       try{
-          console.log("Attempting login for:", email);
-          const response = await auth.login(email, password);
-          console.log("Login successful!", response);
-          onSuccess(redirectPath);
+        console.log("Attempting login for:", email);
+        const response = await auth.login(email, password);
+        console.log("Login successful!", response);
+        onSuccess(redirectPath);
           
       }
       catch(error: any){
-          console.log("Login handler caught an error:", error);
-          errorMessage = error.message;
+        console.log("Login handler caught an error:", error);
+        errorMessage = error.message;
       }
 
   }
