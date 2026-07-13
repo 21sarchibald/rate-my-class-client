@@ -27,6 +27,7 @@ export interface FormErrors {
 }
 
 export interface Review {
+    _id: string
   classCode: string;
   className: string;
   professor: string;
