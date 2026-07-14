@@ -10,8 +10,8 @@
 </script>
 
 <div class="review-card">
-    <label for="courseCode">Course Name:</label>
-    <p id="courseCode">{review.courseName}</p>
+    <label for="courseName">Course Name:</label>
+    <p id="courseName">{review.courseName}</p>
     <label for="courseCode">Course Code:</label>
     <p id="courseCode">{review.courseCode}</p>
     <label for="rating">Rating:</label>

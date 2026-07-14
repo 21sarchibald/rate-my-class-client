@@ -3,10 +3,13 @@ export interface UserStore {
     user?:{
         name:string
         email:string
+        userType: "Admin" | "Student";
+        username:string
+        major:string
         _id:string
     },
     token:string
-   }
+}
 
 export interface Registration {
     _id:string
@@ -43,6 +46,7 @@ export interface Review {
   dislikes: number;
   createdAt: Date;
   modifiedAt: Date;
+  userId: string;
 }
 
 // Course schema
