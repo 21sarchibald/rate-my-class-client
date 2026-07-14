@@ -4,9 +4,13 @@
     import { getParam } from '../js/utils.mts';
     import type { ReviewErrors } from "../js/types.mts";
     import type { Review } from "../js/types.mts";
-    import { getReviewById } from "../js/reviews.mts";
+    import { getReviewById, updateReview } from "../js/reviews.mts";
 
     let isLoading = $state(true);
+    let reviewFound = $state(false);
+    let hasSubmittedAtLeastOnce = $state(false);
+    const paramId = getParam("_id");
+    let reviewId = "";
 
     const currentYear = new Date().getFullYear();
     const years = Array.from(
@@ -17,14 +21,14 @@
     let classCode = $state("");
     let className = $state("");
     let professor = $state("");
-    let semester = $state("");
-    let isBlock = $state(false);
-    let selectedYear = $state();
-    let rating = $state();
-    let gradeReceived = $state("");
-    let difficulty = $state();
-    let type = $state("");
-    let isRecommended = $state(false);
+    let semester = $state<"" | "Winter" | "Spring" | "Summer" | "Fall">("");
+    let isBlock = $state<boolean>(false);
+    let selectedYear = $state<number | "">("");
+    let rating = $state("");
+    let gradeReceived = $state<"" | "A" | "A-" | "B+" | "B" | "B-" | "C+" | "C" | "C-" | "D+" | "D" | "D-" | "F" | "P" | "W">("");
+    let difficulty = $state("");
+    let type = $state<"" | "online" | "in-person" | "hybrid">("");
+    let isRecommended = $state<boolean>(false);
     let description = $state("");
 
     //UI field state
@@ -92,55 +96,101 @@
         return Object.keys(errors).length === 0;
     }
 
-    function handleSubmit(event: SubmitEvent) {
+    async function handleSubmit(event: SubmitEvent) {
         event.preventDefault();
-        if (!validate()) {
-            
+        hasSubmittedAtLeastOnce = true;
+        const isValid = validate();
+        errorMessage = "";
+        if (!isValid) return;
+
+        isSubmitting = true;
+
+        try {
+            if (paramId) {
+                reviewId = paramId
+            }
+            console.log("Attemting review update for: ", className);
+            if (!semester || !selectedYear || !gradeReceived || !type) return;
+            const res = await updateReview(reviewId, classCode, className, professor, semester, isBlock, selectedYear, Number(rating), gradeReceived,
+                Number(difficulty), type, isRecommended, description)
+        } catch (error:any) {
+            console.log("handleSubmit error found: ", error);
+            errorMessage = "Failed to update review.";
+            return errorMessage
+            isSubmitting = false;
         }
     }
 
     onMount(async () => {
-    const param = getParam("_id");
-    if (param) {
-        const data = await getReviewById(param);
-        if(!data) {
-            throw new Error("Review not found");
-            
+        try {
+
+            if (paramId) {
+                reviewId = paramId
+                const data = await getReviewById(reviewId);
+                if(!data) {
+                    errorMessage = "Review not found";
+                    isLoading = false;
+                    reviewFound = false;
+                    throw new Error("Review not found");
+                }
+                
+                classCode = data.classCode;
+                className = data.className;
+                professor = data.professor;
+                semester = data.semester;
+                isBlock = data.isBlock;
+                selectedYear = data.year;
+                rating = String(data.rating);
+                gradeReceived = data.gradeReceived;
+                difficulty = String(data.difficulty);
+                type = data.type;
+                isRecommended = data.isRecommended;
+                description = data.description;
+                
+                isLoading = false;
+                reviewFound = true;
+            }
+        } catch(error) {
+             console.log(error)
         }
-        
-        classCode = data.classCode;
-        className = data.className;
-        professor = data.professor;
-        semester = data.semester;
-        isBlock = data.isBlock;
-        selectedYear = data.year;
-        rating = data.rating;
-        gradeReceived = data.gradeReceived;
-        difficulty = data.difficulty;
-        type = data.type;
-        isRecommended = data.isRecommended;
-        description = data.description;
-        
-        isLoading = false;
-    }
     }); 
 
 </script>
-{#if isLoading}
+{#if isLoading }
     <h3>Loading review.....</h3>
+{:else if !reviewFound}
+    <h3>Review not found.</h3>
+    <a href="/">Return to home</a>
+    {#if errorMessage}
+        <h3>{errorMessage}</h3>
+    {/if}
 {:else}
-    <form class="review-form" action="/submit-review" method="POST" onsubmit={handleSubmit}>
+    <form class="review-form" onsubmit={handleSubmit}>
+            {#if errorMessage}
+                <div class="error">
+                    <p>{errorMessage}</p>
+                </div>
+            {/if}
         <label>
             Class Code:
             <input type="text" name="classCode" bind:value={classCode} required />
+            {#if hasSubmittedAtLeastOnce && errors.classCode}
+                <span class="error">{errors.classCode}</span>
+            {/if}
         </label>
         <label>
             Class Name:
             <input type="text" name="className" bind:value={className} required />
+            {#if hasSubmittedAtLeastOnce && errors.className}
+                <span class="error">{errors.className}</span>
+            {/if}
         </label>
         <label>
             Professor:
             <input type="text" name="professor" bind:value={professor} required />
+            {#if hasSubmittedAtLeastOnce && errors.professor}
+                <span class="error">{errors.professor}</span>
+            {/if}
         </label>
         <label>
             Semester:
@@ -152,10 +202,16 @@
             <label for="spring">Spring</label>
             <input type="radio" name="semester" value="Summer" bind:group={semester} required />
             <label for="summer">Summer</label>
+            {#if hasSubmittedAtLeastOnce && errors.semester}
+                <span class="error">{errors.semester}</span>
+            {/if}
         </label>
         <label>
             Block:
             <input type="checkbox" name="isBlock" bind:checked={isBlock} />
+            {#if hasSubmittedAtLeastOnce && errors.isBlock}
+                <span class="error">{errors.isBlock}</span>
+            {/if}
         </label>
         <label>
             Year:
@@ -166,6 +222,9 @@
                 <option value={year}>{year}</option>
                 {/each}
             </select>
+            {#if hasSubmittedAtLeastOnce && errors.year}
+                <span class="error">{errors.year}</span>
+            {/if}
         </label>
         <label>
             Rating:
@@ -179,6 +238,9 @@
             <label for="4">4</label>
             <input type="radio" name="rating" value="5" bind:group={rating} required />
             <label for="5">5</label>
+            {#if hasSubmittedAtLeastOnce && errors.rating}
+                <span class="error">{errors.rating}</span>
+            {/if}
         </label>
         <label>
             Grade:
@@ -199,6 +261,9 @@
                 <option value="P">P</option>
                 <option value="W">W</option>
             </select>
+            {#if hasSubmittedAtLeastOnce && errors.gradeReceived}
+                <span class="error">{errors.gradeReceived}</span>
+            {/if}
         </label>
         <label>
             Difficulty:
@@ -210,23 +275,35 @@
                 <option value="Hard">4</option>
                 <option value="Difficult">5</option>
             </select>
+            {#if hasSubmittedAtLeastOnce && errors.difficulty}
+                <span class="error">{errors.difficulty}</span>
+            {/if}
         </label>
         <label>
             Online:
             <select name="classType" id="classType" bind:value={type} required>
                 <option value="">Select class type</option>
-                <option value="In-Person">In-Person</option>
-                <option value="Online">Online</option>
-                <option value="Hybrid">Hybrid</option>
+                <option value="in-person">In-Person</option>
+                <option value="online">Online</option>
+                <option value="hybrid">Hybrid</option>
             </select>
+            {#if hasSubmittedAtLeastOnce && errors.type}
+                <span class="error">{errors.type}</span>
+            {/if}
         </label>
         <label>
             Recommend:
             <input type="checkbox" name="recommend" bind:checked={isRecommended} />
+            {#if hasSubmittedAtLeastOnce && errors.isRecommended}
+                <span class="error">{errors.isRecommended}</span>
+            {/if}
         </label>
         <label>
             Description:
             <textarea name="description" bind:value={description} placeholder="Tell other students about your experience..." required></textarea>
+            {#if hasSubmittedAtLeastOnce && errors.description}
+                <span class="error">{errors.description}</span>
+            {/if}
         </label>
         
         <button type="submit">Update</button>

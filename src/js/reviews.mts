@@ -28,3 +28,23 @@ export async function getReviewById(id: string) {
         return;
     }
 }
+
+export async function updateReview(id: string, classCode: string, className: string, professor: string, semester: "Winter" | "Spring" | "Summer" | "Fall",
+  isBlock: boolean, year: number, rating: number, gradeReceived: "A" | "A-" | "B+" | "B" | "B-" | "C+" | "C" | "C-" | "D+" | "D" | "D-" | "F" | "P" | "W",
+  difficulty: number, type: "online" | "in-person" | "hybrid", isRecommended: boolean, description: string) {
+    try {
+        const res = await fetch(`${baseURL}reviews/${id}`, {
+            method: 'PUT',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({id, classCode, className, professor, semester, isBlock, year, rating, gradeReceived,
+                difficulty, type, isRecommended, description})
+            })
+            const data = await res.json();
+            if (!res.ok) {
+                throw new Error(data.error.message);
+            }
+            return data;
+        } catch (error) {
+            console.log(`updateReview() caught an error: ${error}`)
+        }
+}

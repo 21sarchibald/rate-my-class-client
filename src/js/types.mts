@@ -40,8 +40,8 @@ export interface Review {
   type: "online" | "in-person" | "hybrid";
   isRecommended: boolean;
   description: string;
-  likes: number;
-  dislikes: number;
+  likes?: number;
+  dislikes?: number;
   createdAt: Date;
   modifiedAt: Date;
 }
