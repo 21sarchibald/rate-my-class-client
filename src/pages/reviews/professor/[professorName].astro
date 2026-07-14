@@ -1,0 +1,20 @@
+---
+import Layout from "../../../layout/Layout.astro";
+import ReviewsByCourse from "../../../components/ReviewsByCourse.svelte";
+import ReviewsByProfessor from "../../../components/ReviewsByProfessor.svelte";
+const title = "Reviews";
+export const prerender = false;
+
+const { professorName } = Astro.params;
+
+if (!professorName) {
+  throw new Error("Professor name is required");
+}
+---
+
+<Layout title={title}>
+    <body>
+
+        <ReviewsByProfessor client:load professorName={professorName!} />
+    </body>
+</Layout>

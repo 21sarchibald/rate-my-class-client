@@ -1,0 +1,19 @@
+---
+import Layout from "../../../layout/Layout.astro";
+import ReviewsByCourse from "../../../components/ReviewsByCourse.svelte";
+const title = "Reviews";
+export const prerender = false;
+
+const { courseId } = Astro.params;
+
+if (!courseId) {
+  throw new Error("Course ID is required");
+}
+---
+
+<Layout title={title}>
+    <body>
+
+        <ReviewsByCourse client:load courseId={courseId!} />
+    </body>
+</Layout>

@@ -45,6 +45,15 @@ export interface Review {
   modifiedAt: Date;
 }
 
+// Course schema
+export interface Course {
+  _id: string;
+  courseCode: string;
+  courseName: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface ReviewErrors {
   classCode?: string;
   className?: string;
