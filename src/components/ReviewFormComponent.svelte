@@ -12,8 +12,8 @@
 
 
 
-    let classCode = $state("");
-    let className = $state("");
+    let courseCode = $state("");
+    let courseName = $state("");
     let professor = $state("");
     let semester = $state("");
     let isBlock = $state(false);
@@ -22,7 +22,7 @@
     let gradeReceived = $state("");
     let difficulty = $state("");
     let type = $state("");
-    let isRecommended = $state(false);
+    let recommend = $state(false);
     let description = $state("");
 
     //UI field state
@@ -34,19 +34,19 @@
     function validate() {
         errors = {};
 
-        const classCodeRegex = /^[A-Za-z]{2,5}\d{3}$/;
+        const courseCodeRegex = /^[A-Za-z]{2,5}\d{3}$/;
 
-        if (!classCode.trim()) {
-            errors.classCode = "Class code is required.";
-        } else if (!classCodeRegex.test(classCode.trim().toUpperCase())) {
-            errors.classCode =
+        if (!courseCode.trim()) {
+            errors.courseCode = "Class code is required.";
+        } else if (!courseCodeRegex.test(courseCode.trim().toUpperCase())) {
+            errors.courseCode =
                 "Enter a valid class code (e.g. CSE210 or CS123).";
         }
 
-        if (!className.trim()) {
-            errors.className = "Class name is required.";
-        } else if (className.trim().length < 3) {
-            errors.className = "Class name is too short.";
+        if (!courseName.trim()) {
+            errors.courseName = "Class name is required.";
+        } else if (courseName.trim().length < 3) {
+            errors.courseName = "Class name is too short.";
         }
 
         if (!professor.trim()) {
@@ -101,11 +101,11 @@
 <form class="review-form" action="/submit-review" method="POST" onsubmit={handleSubmit}>
     <label>
         Class Code:
-        <input type="text" name="classCode" bind:value={classCode} required />
+        <input type="text" name="courseCode" bind:value={courseCode} required />
     </label>
     <label>
         Class Name:
-        <input type="text" name="className" bind:value={className} required />
+        <input type="text" name="courseName" bind:value={courseName} required />
     </label>
     <label>
         Professor:
@@ -191,7 +191,7 @@
     </label>
     <label>
         Recommend:
-        <input type="checkbox" name="recommend" bind:checked={isRecommended} />
+        <input type="checkbox" name="recommend" bind:checked={recommend} />
     </label>
     <label>
         Description:
