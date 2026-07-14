@@ -7,8 +7,6 @@
 
     let { review }: Props = $props();
 
-    console.log(review);
-
 </script>
 
 <div class="review-card">

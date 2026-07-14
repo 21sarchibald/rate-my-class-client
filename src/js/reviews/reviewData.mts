@@ -9,7 +9,7 @@ function convertToJson(res:Response) {
 }
 
 export async function getReviews(category:string, identifier:string) {
-  return await fetch(baseURL + `reviews/${category}/${identifier}`)
+  return await fetch(baseURL + `reviews?${category}=${identifier}`)
     .then(convertToJson)
     .then((data) => data);
 }
