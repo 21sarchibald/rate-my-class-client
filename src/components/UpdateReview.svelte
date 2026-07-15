@@ -6,11 +6,11 @@
     import type { Review } from "../js/types.mts";
     import { getReviewById, updateReview } from "../js/reviews.mts";
 
-    let isLoading = $state(false); // default to true
-    let reviewFound = $state(true); // default to false
+    let isLoading = $state(true); // default to true
+    let reviewFound = $state(false); // default to false
     let hasSubmittedAtLeastOnce = $state(false);
-    const paramId = getParam("_id");
     let reviewId = "";
+    let user = authSvelte.userStore;
 
     const currentYear = new Date().getFullYear();
     const years = Array.from(
@@ -99,6 +99,7 @@
     async function handleSubmit(event: SubmitEvent) {
         event.preventDefault();
         hasSubmittedAtLeastOnce = true;
+        const token = user.token;
         const isValid = validate();
         errorMessage = "";
         if (!isValid) return;
@@ -106,13 +107,17 @@
         isSubmitting = true;
 
         try {
-            if (paramId) {
-                reviewId = paramId
-            }
             console.log("Attemting review update for: ", courseName);
+            console.log("Token being sent:", token)
             if (!semester || !selectedYear || !gradeReceived || !type) return;
-            const res = await updateReview(reviewId, courseCode, courseName, professor, semester, isBlock, selectedYear, Number(rating), gradeReceived,
+            const res = await updateReview(token, reviewId, courseCode, courseName, professor, semester, isBlock, selectedYear, Number(rating), gradeReceived,
                 Number(difficulty), type, isRecommended, description)
+            console.log("Token sent to updateReview:", token);
+            console.log("Review ID being updated:", reviewId);
+            if (res) {
+                isSuccess = true;
+
+            }
         } catch (error:any) {
             console.log("handleSubmit error found: ", error);
             errorMessage = "Failed to update review.";
@@ -123,6 +128,7 @@
 
     onMount(async () => {
         try {
+            const paramId = getParam("_id");
 
             if (paramId) {
                 reviewId = paramId
@@ -143,6 +149,7 @@
                 rating = String(data.rating);
                 gradeReceived = data.gradeReceived;
                 difficulty = String(data.difficulty);
+                console.log("difficulty:", difficulty)
                 type = data.type;
                 isRecommended = data.recommend;
                 description = data.description;
@@ -156,8 +163,12 @@
     }); 
 
 </script>
+
 {#if isLoading }
     <h3>Loading review.....</h3>
+{:else if isSuccess}
+    <h3>Review updated successfully!</h3>
+    <a href="/">Return to home</a>
 {:else if !reviewFound}
     <h3>Review not found.</h3>
     <a href="/">Return to home</a>
@@ -310,3 +321,9 @@
     </form>
 
 {/if}
+
+<style>
+    a {
+        color: black;
+    }
+</style>

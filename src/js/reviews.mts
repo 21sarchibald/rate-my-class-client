@@ -29,22 +29,32 @@ export async function getReviewById(id: string) {
     }
 }
 
-export async function updateReview(id: string, courseCode: string, courseName: string, professor: string, semester: "Winter" | "Spring" | "Summer" | "Fall",
+export async function updateReview(token: string, id: string, courseCode: string, courseName: string, professor: string, semester: "Winter" | "Spring" | "Summer" | "Fall",
   isBlock: boolean, year: number, rating: number, gradeReceived: "A" | "A-" | "B+" | "B" | "B-" | "C+" | "C" | "C-" | "D+" | "D" | "D-" | "F" | "P" | "W",
   difficulty: number, type: "online" | "in-person" | "hybrid", isRecommended: boolean, description: string) {
     try {
+        if (!token) {
+            throw new Error("No authorization token provided to updateReview");
+        }
         const res = await fetch(`${baseURL}reviews/${id}`, {
             method: 'PUT',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({id, courseCode, courseName, professor, semester, isBlock, year, rating, gradeReceived,
+            headers: { "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` },
+            body: JSON.stringify({courseCode, courseName, professor, semester, isBlock, year, rating, gradeReceived,
                 difficulty, type, isRecommended, description})
             })
-            const data = await res.json();
-            if (!res.ok) {
-                throw new Error(data.error.message);
+            let data;
+            try {
+                data = await res.json();
+            } catch {
+                data = null;
             }
+            if (!res.ok) {
+                const errorMessage = data?.error?.message || data?.message || data?.error || res.statusText || 'Unknown error';
+                throw new Error(errorMessage);            }
             return data;
         } catch (error) {
             console.log(`updateReview() caught an error: ${error}`)
+            throw error;
         }
 }
