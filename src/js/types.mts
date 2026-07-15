@@ -28,8 +28,8 @@ export interface FormErrors {
 
 export interface Review {
     _id: string
-  classCode: string;
-  className: string;
+  courseCode: string;
+  courseName: string;
   professor: string;
   semester: "Winter" | "Spring" | "Summer" | "Fall";
   isBlock: boolean;
@@ -38,7 +38,7 @@ export interface Review {
   gradeReceived: "A" | "A-" | "B+" | "B" | "B-" | "C+" | "C" | "C-" | "D+" | "D" | "D-" | "F" | "P" | "W";
   difficulty: number;
   type: "online" | "in-person" | "hybrid";
-  isRecommended: boolean;
+  recommend: boolean;
   description: string;
   likes?: number;
   dislikes?: number;
@@ -46,9 +46,18 @@ export interface Review {
   modifiedAt: Date;
 }
 
+// Course schema
+export interface Course {
+  _id: string;
+  courseCode: string;
+  courseName: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface ReviewErrors {
-  classCode?: string;
-  className?: string;
+  courseCode?: string;
+  courseName?: string;
   professor?: string;
   semester?: string;
   isBlock?: string;
@@ -56,7 +65,7 @@ export interface ReviewErrors {
   rating?: string;
   gradeReceived?: string;
   difficulty?: string;
-  isRecommended?: string;
+  recommend?: string;
   type?: string;
   description?: string;
 }

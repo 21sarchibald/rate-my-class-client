@@ -18,8 +18,8 @@
         (_, i) => currentYear - 5 + i
     );
 
-    let classCode = $state("");
-    let className = $state("");
+    let courseCode = $state("");
+    let courseName = $state("");
     let professor = $state("");
     let semester = $state<"" | "Winter" | "Spring" | "Summer" | "Fall">("");
     let isBlock = $state<boolean>(false);
@@ -40,19 +40,19 @@
     function validate() {
         errors = {};
 
-        const classCodeRegex = /^[A-Za-z]{2,5}\d{3}$/;
+        const courseCodeRegex = /^[A-Za-z]{2,5}\d{3}$/;
 
-        if (!classCode.trim()) {
-            errors.classCode = "Class code is required.";
-        } else if (!classCodeRegex.test(classCode.trim().toUpperCase())) {
-            errors.classCode =
+        if (!courseCode.trim()) {
+            errors.courseCode = "Class code is required.";
+        } else if (!courseCodeRegex.test(courseCode.trim().toUpperCase())) {
+            errors.courseCode =
                 "Enter a valid class code (e.g. CSE210 or CS123).";
         }
 
-        if (!className.trim()) {
-            errors.className = "Class name is required.";
-        } else if (className.trim().length < 3) {
-            errors.className = "Class name is too short.";
+        if (!courseName.trim()) {
+            errors.courseName = "Class name is required.";
+        } else if (courseName.trim().length < 3) {
+            errors.courseName = "Class name is too short.";
         }
 
         if (!professor.trim()) {
@@ -109,9 +109,9 @@
             if (paramId) {
                 reviewId = paramId
             }
-            console.log("Attemting review update for: ", className);
+            console.log("Attemting review update for: ", courseName);
             if (!semester || !selectedYear || !gradeReceived || !type) return;
-            const res = await updateReview(reviewId, classCode, className, professor, semester, isBlock, selectedYear, Number(rating), gradeReceived,
+            const res = await updateReview(reviewId, courseCode, courseName, professor, semester, isBlock, selectedYear, Number(rating), gradeReceived,
                 Number(difficulty), type, isRecommended, description)
         } catch (error:any) {
             console.log("handleSubmit error found: ", error);
@@ -134,8 +134,8 @@
                     throw new Error("Review not found");
                 }
                 
-                classCode = data.classCode;
-                className = data.className;
+                courseCode = data.courseCode;
+                courseName = data.courseName;
                 professor = data.professor;
                 semester = data.semester;
                 isBlock = data.isBlock;
@@ -144,7 +144,7 @@
                 gradeReceived = data.gradeReceived;
                 difficulty = String(data.difficulty);
                 type = data.type;
-                isRecommended = data.isRecommended;
+                isRecommended = data.recommend;
                 description = data.description;
                 
                 isLoading = false;
@@ -173,16 +173,16 @@
             {/if}
         <label>
             Class Code:
-            <input type="text" name="classCode" bind:value={classCode} required />
-            {#if hasSubmittedAtLeastOnce && errors.classCode}
-                <span class="error">{errors.classCode}</span>
+            <input type="text" name="courseCode" bind:value={courseCode} required />
+            {#if hasSubmittedAtLeastOnce && errors.courseCode}
+                <span class="error">{errors.courseCode}</span>
             {/if}
         </label>
         <label>
             Class Name:
-            <input type="text" name="className" bind:value={className} required />
-            {#if hasSubmittedAtLeastOnce && errors.className}
-                <span class="error">{errors.className}</span>
+            <input type="text" name="courseName" bind:value={courseName} required />
+            {#if hasSubmittedAtLeastOnce && errors.courseName}
+                <span class="error">{errors.courseName}</span>
             {/if}
         </label>
         <label>
@@ -294,8 +294,8 @@
         <label>
             Recommend:
             <input type="checkbox" name="recommend" bind:checked={isRecommended} />
-            {#if hasSubmittedAtLeastOnce && errors.isRecommended}
-                <span class="error">{errors.isRecommended}</span>
+            {#if hasSubmittedAtLeastOnce && errors.recommend}
+                <span class="error">{errors.recommend}</span>
             {/if}
         </label>
         <label>

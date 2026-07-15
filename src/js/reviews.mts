@@ -29,14 +29,14 @@ export async function getReviewById(id: string) {
     }
 }
 
-export async function updateReview(id: string, classCode: string, className: string, professor: string, semester: "Winter" | "Spring" | "Summer" | "Fall",
+export async function updateReview(id: string, courseCode: string, courseName: string, professor: string, semester: "Winter" | "Spring" | "Summer" | "Fall",
   isBlock: boolean, year: number, rating: number, gradeReceived: "A" | "A-" | "B+" | "B" | "B-" | "C+" | "C" | "C-" | "D+" | "D" | "D-" | "F" | "P" | "W",
   difficulty: number, type: "online" | "in-person" | "hybrid", isRecommended: boolean, description: string) {
     try {
         const res = await fetch(`${baseURL}reviews/${id}`, {
             method: 'PUT',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({id, classCode, className, professor, semester, isBlock, year, rating, gradeReceived,
+            body: JSON.stringify({id, courseCode, courseName, professor, semester, isBlock, year, rating, gradeReceived,
                 difficulty, type, isRecommended, description})
             })
             const data = await res.json();
