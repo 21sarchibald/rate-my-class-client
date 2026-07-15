@@ -27,7 +27,7 @@ export interface FormErrors {
 }
 
 export interface Review {
-    _id: string
+    _id?: string
   courseCode: string;
   courseName: string;
   professor: string;
@@ -43,7 +43,7 @@ export interface Review {
   likes?: number;
   dislikes?: number;
   createdAt: Date;
-  modifiedAt: Date;
+  updatedAt: Date;
 }
 
 // Course schema

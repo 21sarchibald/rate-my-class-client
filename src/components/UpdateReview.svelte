@@ -6,8 +6,8 @@
     import type { Review } from "../js/types.mts";
     import { getReviewById, updateReview } from "../js/reviews.mts";
 
-    let isLoading = $state(true);
-    let reviewFound = $state(false);
+    let isLoading = $state(false); // default to true
+    let reviewFound = $state(true); // default to false
     let hasSubmittedAtLeastOnce = $state(false);
     const paramId = getParam("_id");
     let reviewId = "";
