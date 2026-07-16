@@ -9,10 +9,18 @@ function convertToJson(res:Response) {
   }
 }
 
-export async function getReviews(category:string, identifier:string) {
-  return await fetch(baseURL + `reviews?${category}=${identifier}`)
-    .then(convertToJson)
-    .then((data) => data);
+export async function getReviews(category?:string, identifier?:string) {
+  let url = `${baseURL}reviews`;
+
+    if (category && identifier) {
+        url += `?${category}=${identifier}`;
+    }
+
+    console.log("Fetching:", url);
+
+    const response = await fetch(url);
+    return convertToJson(response);
+    
 }
 
 // export async function getReviewById(id:string) {
