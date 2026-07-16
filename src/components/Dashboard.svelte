@@ -1,20 +1,35 @@
-<script>
+<script lang=ts>
     import { onMount } from "svelte";
     import auth from "../js/auth.svelte.ts";
     import ReviewCard from "./ReviewCard.svelte";
+    import { getReviews } from "../js/reviews/reviewData.mts";
+    import type { Review } from "../js/types.mts";
 
-    onMount(() => {
+    let reviews:Review[] = $state([]);
+
+    onMount(async () => {
         auth.checkAuth();
-    });   
 
+        const allReviews = await getReviews();
+
+        console.log(allReviews);
+
+        if (auth.userStore.user?.userType === "Admin") {
+            reviews = allReviews;
+        } else {
+            reviews = allReviews.filter(
+                review => review.userId.toString() === auth.userStore.user?._id
+            );
+        }
+    });
     console.log($state.snapshot(auth.userStore.user));
 
 </script>
 
 <main>
-    <h1>Hello {auth.userStore.user.username} </h1>
+    <h1>Hello {auth.userStore.user?.username} </h1>
 
-    {#if auth.userStore.user.userType == "Admin"}
+    {#if auth.userStore.user?.userType == "Admin"}
         <h2>Admin Dashboard</h2>
     {:else}
         <h2>Student Dashboard</h2>
@@ -23,7 +38,9 @@
     <div class="reviews">
         <h3>Reviews</h3>
         <div class="review-card">
-            
+            {#each reviews as review}
+                <ReviewCard {review} />
+            {/each}
         </div>
 
        
