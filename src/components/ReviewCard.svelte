@@ -10,11 +10,7 @@
 </script>
 
 <div class="review-card">
-<<<<<<< HEAD
-    <label for="courseName">Course Name:</label>
-=======
     <!-- <label for="courseName">Course Name:</label>
->>>>>>> 96883ab87fce1edf9e6adfef696405acf49d623b
     <p id="courseName">{review.courseName}</p>
     <label for="courseCode">Course Code:</label>
     <p id="courseCode">{review.courseCode}</p> -->
