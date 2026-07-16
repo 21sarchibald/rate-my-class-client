@@ -241,3 +241,35 @@ console.log("ReviewFormComponent loaded");
     
     <button type="submit">Submit</button>
 </form>
+
+<style>
+    .review-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    label {
+      display: flex;
+      flex-direction: row;
+      font-weight: bold;
+    }
+    input {
+      margin-left: 0.5rem;
+      font-size: 1rem;
+    }
+    button {
+      padding: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    /* .error {
+      color: red;
+      margin-bottom: 1rem;
+      text-align: center;
+    } */
+  </style>
