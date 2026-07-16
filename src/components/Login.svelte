@@ -10,7 +10,7 @@
   let email = $state("");
   let password = $state("");
   let errorMessage = $state("");
-  let redirectPath = '/';
+  let redirectPath = '/dashboard';
 
   async function loginHandler(event: Event) {
       event.preventDefault();
