@@ -1,5 +1,6 @@
 const baseURL = import.meta.env.PUBLIC_SERVER_URL;
-import type {Review} from "../types.mts"
+import type {CreateReviewRequest, Review} from "../types.mts"
+import authSvelte from "../auth.svelte";
 function convertToJson(res:Response) {
   if (res.ok) {
     return res.json();
@@ -27,4 +28,22 @@ export async function searchReviews(query:string) {
   const reviews = await convertToJson(response) as Review[];
   console.log(reviews);
   return reviews;
+}
+
+export async function createReview(review:CreateReviewRequest) {
+    const response = await fetch(baseURL + `reviews/create`, {
+        method: 'POST',
+        headers: { 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authSvelte.userStore.token}`
+         },
+        body: JSON.stringify(review)
+    })
+    const data = await response.json();
+
+    if (response.ok) {
+        return data;
+    } else {
+        throw new Error(data.error);
+    }
 }

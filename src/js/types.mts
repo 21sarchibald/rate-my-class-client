@@ -30,6 +30,8 @@ export interface FormErrors {
 }
 
 export interface Review {
+  _id?:string;
+  userId: string;
   courseCode: string;
   courseName: string;
   professor: string;
@@ -42,11 +44,26 @@ export interface Review {
   type: "online" | "in-person" | "hybrid";
   recommend: boolean;
   description: string;
-  likes: number;
-  dislikes: number;
+  likes?: number;
+  dislikes?: number;
   createdAt: Date;
-  modifiedAt: Date;
-  userId: string;
+  updatedAt: Date;
+}
+
+// Create Review Request schema
+export interface CreateReviewRequest {
+  courseCode: string;
+  courseName: string;
+  professor: string;
+  semester: "Winter" | "Spring" | "Summer" | "Fall";
+  isBlock: boolean;
+  year: number;
+  rating: number;
+  gradeReceived: "A" | "A-" | "B+" | "B" | "B-" | "C+" | "C" | "C-" | "D+" | "D" | "D-" | "F" | "P" | "W";
+  difficulty: number;
+  type: "online" | "in-person" | "hybrid";
+  recommend: boolean;
+  description: string;
 }
 
 // Course schema

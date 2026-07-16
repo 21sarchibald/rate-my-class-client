@@ -1,16 +1,24 @@
 <script lang="ts">
+console.log("ReviewFormComponent loaded");
     import { onMount } from "svelte";
     import authSvelte from "../js/auth.svelte";
     import { getParam } from '../js/utils.mts';
-    import type { ReviewErrors } from "../js/types.mts";
+    import type { CreateReviewRequest, ReviewErrors } from "../js/types.mts";
+    import { createReview } from "../js/reviews/reviewData.mts";
+    import { treeifyError } from "astro:schema";
     const currentYear = new Date().getFullYear();
+
+    onMount(() => {
+        authSvelte.checkAuth();
+        console.log(authSvelte.userStore.user)
+    });
 
     const years = Array.from(
         { length: 6 },
         (_, i) => currentYear - 5 + i
     );
 
-
+    let userId = authSvelte.userStore.user;
 
     let courseCode = $state("");
     let courseName = $state("");
@@ -90,15 +98,48 @@
         return Object.keys(errors).length === 0;
     }
 
-    function handleSubmit(event: SubmitEvent) {
+    async function handleSubmit(event: SubmitEvent) {
+        event.preventDefault();
+        console.log(authSvelte.userStore)
         if (!validate()) {
-            event.preventDefault();
+            console.error("Validation error");
+            return;
         }
+
+        const newReview = {
+            courseCode: courseCode.trim().toUpperCase(),
+            courseName: courseName.trim(),
+            professor: professor.trim(),
+            semester: semester as CreateReviewRequest["semester"],
+            isBlock: isBlock,
+            year: Number(selectedYear),
+            rating: Number(rating),
+            gradeReceived: gradeReceived as CreateReviewRequest["gradeReceived"],
+            difficulty: Number(difficulty),
+            type: type.toLowerCase() as CreateReviewRequest["type"],
+            recommend: recommend,
+            description: description.trim()
+        } as CreateReviewRequest;
+
+        try {
+        console.log("Creating review");
+        isSubmitting = true;
+        const response = await createReview(newReview);
+        console.log("New review successfully created!", response);
+        isSubmitting = false;
+        isSuccess = true;
+          
+      }
+      catch(error: any){
+        isSubmitting = false;
+        console.log("Error creating new review", error);
+        errorMessage = error.message;
+      }
     }
 
 </script>
 
-<form class="review-form" action="/submit-review" method="POST" onsubmit={handleSubmit}>
+<form class="review-form" action="/reviews/create" method="POST" onsubmit={handleSubmit}>
     <label>
         Class Code:
         <input type="text" name="courseCode" bind:value={courseCode} required />
@@ -200,3 +241,35 @@
     
     <button type="submit">Submit</button>
 </form>
+
+<style>
+    .review-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    label {
+      display: flex;
+      flex-direction: row;
+      font-weight: bold;
+    }
+    input {
+      margin-left: 0.5rem;
+      font-size: 1rem;
+    }
+    button {
+      padding: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    /* .error {
+      color: red;
+      margin-bottom: 1rem;
+      text-align: center;
+    } */
+  </style>
