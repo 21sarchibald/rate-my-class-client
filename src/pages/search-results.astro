@@ -1,0 +1,11 @@
+---
+import Layout from "../layout/Layout.astro";
+import SearchResultComponent from "../components/SearchResultComponent.svelte";
+const title = "Search Results";
+---
+
+<Layout title={title}>
+    <body>
+        <SearchResultComponent client:load />
+    </body>
+</Layout>

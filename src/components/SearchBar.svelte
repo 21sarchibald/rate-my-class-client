@@ -2,16 +2,8 @@
     import { onMount } from 'svelte';
     import  auth  from '../js/auth.svelte.ts';
     import { setLocalStorage, getParam } from '../js/utils.mts';
-    import { searchProducts } from '../js/productData.mts';
-    import type { Product } from '../js/types.mts';
-
-// what is this?  We give the option to pass a function into our login component that will get called on a successful login. If no function is passed it defaults to one that will redirect the user to another page (like Home).
-// let { onSuccess = ({ query, products }) => {
-//     searchStore.set({ query, products });
-//     window.location.href = `/product-list?query=${encodeURIComponent(query)}`; } } = 
-//     $props<{
-//       onSuccess?: (data: { category: string, products: Product[] }) => void;
-//     }>();
+    import { searchReviews } from '../js/reviews/reviewData.mts';
+    import type { Review } from '../js/types.mts';
 
 let queryString = $state("");
 let errorMessage = $state("");
@@ -38,7 +30,7 @@ async function searchHandler(event: Event) {
   <p class="error">{errorMessage}</p>
 {/if}
 <form onsubmit={searchHandler} class="search-form">
-    <input type="string" bind:value={queryString} required placeholder="Search for a product"/>
+    <input type="string" bind:value={queryString} required placeholder="Search for a review"/>
   <button type="submit"> 
     <img src="../../search-icon.svg" alt="Search submit icon"> 
   </button>
@@ -57,6 +49,7 @@ async function searchHandler(event: Event) {
     padding: .25rem .5rem; 
     border: 1px solid #ccc;
     border-radius: 50px;
+    background-color: white;
   }
 
   input {
@@ -74,6 +67,7 @@ async function searchHandler(event: Event) {
   }
 
   button {
+    border: none;
     padding: .2rem;
     font-size: 1rem;
     height: 1.9rem;
@@ -84,10 +78,12 @@ async function searchHandler(event: Event) {
     justify-content: center;
     align-items: center;
     margin: 0px;
+    background-color: black;
   }
 
   button img {
     height: 1.5rem;
+    cursor: pointer;
   }
 
   .error {

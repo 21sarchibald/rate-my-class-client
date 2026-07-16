@@ -25,9 +25,9 @@ export async function getReviews(category:string, identifier:string) {
 export async function searchReviews(query:string): Promise<SearchResults> {
   const response = await fetch(baseURL + `reviews/search?query=${encodeURIComponent(query)}`);
   console.log("response", response);
-  const reviews = await convertToJson(response) as SearchResults;
-  console.log(reviews);
-  return reviews;
+  const results = await convertToJson(response) as SearchResults;
+  console.log(results);
+  return results;
 }
 
 export async function createReview(review:CreateReviewRequest) {
