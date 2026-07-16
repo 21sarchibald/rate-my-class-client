@@ -112,6 +112,9 @@
         const param = getParam("redirect");
         if (param) {
             redirectPath = param;
+            setTimeout(() => {
+            window.location.href = param;
+        }, 5000);
         } else if (document.referrer != window.location.href) {
             redirectPath = document.referrer;
         }

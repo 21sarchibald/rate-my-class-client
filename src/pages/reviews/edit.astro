@@ -1,0 +1,11 @@
+---
+import Layout from "../../layout/Layout.astro";
+import UpdateReview from "../../components/UpdateReview.svelte";
+const title = "Update Review";
+---
+
+<Layout title={title}>
+    <body>
+        <UpdateReview client:load />
+    </body>
+</Layout>

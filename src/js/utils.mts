@@ -20,3 +20,4 @@ export function getParam(param: string) {
   const value = urlParams.get(param);
   return value;
 }
+

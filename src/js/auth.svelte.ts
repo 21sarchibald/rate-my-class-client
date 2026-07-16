@@ -1,14 +1,14 @@
 import type {UserStore} from "./types.mts";
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
-const baseURL = import.meta.env.PUBLIC_SERVER_URL;
 
+const baseURL = import.meta.env.PUBLIC_SERVER_URL;
 
 const userStore = $state({isLoggedIn: false, user: {}, token: ""}) as UserStore;
 
 async function register(name:string, username:string, major:string, email:string, password:string) {
     const res = await fetch(`${baseURL}users/register`, {
         method: 'POST',
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json"},
         body: JSON.stringify({name, username, major, email, password})
     })
     const data = await res.json();

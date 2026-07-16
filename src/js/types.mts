@@ -27,6 +27,7 @@ export interface FormErrors {
 }
 
 export interface Review {
+  _id?:string;
   userId: string;
   courseCode: string;
   courseName: string;
@@ -40,10 +41,10 @@ export interface Review {
   type: "online" | "in-person" | "hybrid";
   recommend: boolean;
   description: string;
-  likes: number;
-  dislikes: number;
+  likes?: number;
+  dislikes?: number;
   createdAt: Date;
-  modifiedAt: Date;
+  updatedAt: Date;
 }
 
 // Create Review Request schema
