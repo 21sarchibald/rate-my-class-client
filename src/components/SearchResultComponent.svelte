@@ -74,7 +74,7 @@
     }
 
     .result-list a {
-        color: darkblue;
+        color: rgb(218, 7, 120);
         display: block;
     }
 </style>
