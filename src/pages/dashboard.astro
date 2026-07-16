@@ -1,0 +1,11 @@
+---
+import Layout from "../layout/Layout.astro";
+import Dashboard from "../components/Dashboard.svelte";
+const title = "Dashboard";
+---
+
+<Layout title={title}>
+    <body>
+        <Dashboard client:load />
+    </body>
+</Layout>
