@@ -172,9 +172,6 @@
 {:else if !reviewFound}
     <h3>Review not found.</h3>
     <a href="/">Return to home</a>
-    {#if errorMessage}
-        <h3>{errorMessage}</h3>
-    {/if}
 {:else}
     <form class="review-form" onsubmit={handleSubmit}>
             {#if errorMessage}
@@ -182,62 +179,68 @@
                     <p>{errorMessage}</p>
                 </div>
             {/if}
-        <label>
-            Class Code:
-            <input type="text" name="courseCode" bind:value={courseCode} required />
-            {#if hasSubmittedAtLeastOnce && errors.courseCode}
+        <div class="form-group1">
+
+            <label>
+                Class Code:
+                <input type="text" name="courseCode" bind:value={courseCode} required />
+                {#if hasSubmittedAtLeastOnce && errors.courseCode}
                 <span class="error">{errors.courseCode}</span>
-            {/if}
-        </label>
-        <label>
-            Class Name:
-            <input type="text" name="courseName" bind:value={courseName} required />
-            {#if hasSubmittedAtLeastOnce && errors.courseName}
+                {/if}
+            </label>
+            <label>
+                Class Name:
+                <input type="text" name="courseName" bind:value={courseName} required />
+                {#if hasSubmittedAtLeastOnce && errors.courseName}
                 <span class="error">{errors.courseName}</span>
-            {/if}
-        </label>
-        <label>
-            Professor:
-            <input type="text" name="professor" bind:value={professor} required />
-            {#if hasSubmittedAtLeastOnce && errors.professor}
+                {/if}
+            </label>
+        </div>
+            <label>
+                Professor:
+                <input type="text" name="professor" bind:value={professor} required />
+                {#if hasSubmittedAtLeastOnce && errors.professor}
                 <span class="error">{errors.professor}</span>
-            {/if}
-        </label>
-        <label>
-            Semester:
-            <input type="radio" name="semester" value="Fall" bind:group={semester} required />
-            <label for="fall">Fall</label>
-            <input type="radio" name="semester" value="Winter" bind:group={semester} required />
-            <label for="winter">Winter</label>
-            <input type="radio" name="semester" value="Spring" bind:group={semester} required />
-            <label for="spring">Spring</label>
-            <input type="radio" name="semester" value="Summer" bind:group={semester} required />
-            <label for="summer">Summer</label>
-            {#if hasSubmittedAtLeastOnce && errors.semester}
-                <span class="error">{errors.semester}</span>
-            {/if}
-        </label>
-        <label>
-            Block:
-            <input type="checkbox" name="isBlock" bind:checked={isBlock} />
-            {#if hasSubmittedAtLeastOnce && errors.isBlock}
-                <span class="error">{errors.isBlock}</span>
-            {/if}
-        </label>
-        <label>
+                {/if}
+            </label>
+            <div class="form-group2">
+
+                <label class="semester">
+                    Semester:
+                    <input type="radio" name="semester" value="Fall" bind:group={semester} required />
+                    <label for="fall">Fall</label>
+                    <input type="radio" name="semester" value="Winter" bind:group={semester} required />
+                    <label for="winter">Winter</label>
+                    <input type="radio" name="semester" value="Spring" bind:group={semester} required />
+                    <label for="spring">Spring</label>
+                    <input type="radio" name="semester" value="Summer" bind:group={semester} required />
+                    <label for="summer">Summer</label>
+                    {#if hasSubmittedAtLeastOnce && errors.semester}
+                    <span class="error">{errors.semester}</span>
+                    {/if}
+                </label>
+                <label>
+                    Block:
+                    <input type="checkbox" name="isBlock" bind:checked={isBlock} />
+                    {#if hasSubmittedAtLeastOnce && errors.isBlock}
+                    <span class="error">{errors.isBlock}</span>
+                    {/if}
+                </label>
+            </div>
+        <label class="year">
             Year:
             <select bind:value={selectedYear}>
                 <option value="">Select a year</option>
-
+                
                 {#each years as year}
                 <option value={year}>{year}</option>
                 {/each}
             </select>
             {#if hasSubmittedAtLeastOnce && errors.year}
-                <span class="error">{errors.year}</span>
+            <span class="error">{errors.year}</span>
             {/if}
         </label>
-        <label>
+        <label class="rating">
             Rating:
             <input type="radio" name="rating" value="1" bind:group={rating} required />
             <label for="1">1</label>
@@ -251,21 +254,21 @@
             <label for="5">5</label>
             {#if hasSubmittedAtLeastOnce && errors.rating}
                 <span class="error">{errors.rating}</span>
-            {/if}
-        </label>
-        <label>
-            Grade:
-            <select bind:value={gradeReceived} required>
-                <option value="">Select grade</option>
-                <option value="A">A</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B">B</option>
-                <option value="B-">B-</option>
-                <option value="C+">C+</option>
-                <option value="C">C</option>
-                <option value="C-">C-</option>
-                <option value="D+">D+</option>
+                {/if}
+            </label>
+            <label class="grade">
+                Grade:
+                <select bind:value={gradeReceived} required>
+                    <option value="">Select grade</option>
+                    <option value="A">A</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B">B</option>
+                    <option value="B-">B-</option>
+                    <option value="C+">C+</option>
+                    <option value="C">C</option>
+                    <option value="C-">C-</option>
+                    <option value="D+">D+</option>
                 <option value="D">D</option>
                 <option value="D-">D-</option>
                 <option value="F">F</option>
@@ -273,7 +276,7 @@
                 <option value="W">W</option>
             </select>
             {#if hasSubmittedAtLeastOnce && errors.gradeReceived}
-                <span class="error">{errors.gradeReceived}</span>
+            <span class="error">{errors.gradeReceived}</span>
             {/if}
         </label>
         <label>
@@ -309,9 +312,9 @@
                 <span class="error">{errors.recommend}</span>
             {/if}
         </label>
-        <label>
+        <label >
             Description:
-            <textarea name="description" bind:value={description} placeholder="Tell other students about your experience..." required></textarea>
+            <textarea class="description" name="description" bind:value={description} placeholder="Tell other students about your experience..." required></textarea>
             {#if hasSubmittedAtLeastOnce && errors.description}
                 <span class="error">{errors.description}</span>
             {/if}
@@ -323,6 +326,63 @@
 {/if}
 
 <style>
+    .review-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+    .form-group1 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    .form-group2 {
+        display: flex;
+        flex-direction: row;
+    }
+    label {
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+
+    }
+    .semester {
+        display: flex;
+        flex-direction: row;
+    }
+    input, select, .description {
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        font-size: 1rem;
+        box-sizing: border-box;
+        width: 100%;
+        border-radius: 50px;
+    }
+    button {
+        padding: 0.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        background-color: #44613c;
+        color: #f4f3f3;
+    }
+    .error {
+        color: red;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .is-invalid {
+        border: 2px solid red;
+        box-shadow: 0 0 5px red;
+        margin-bottom: 0.5rem;
+    }
+    .is-valid {
+        border: 2px solid green;
+    }
     a {
         color: black;
     }
