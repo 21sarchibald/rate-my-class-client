@@ -1,5 +1,5 @@
 const baseURL = import.meta.env.PUBLIC_SERVER_URL;
-import type {CreateReviewRequest, Review} from "../types.mts"
+import type {CreateReviewRequest, Review, SearchResults} from "../types.mts"
 import authSvelte from "../auth.svelte";
 function convertToJson(res:Response) {
   if (res.ok) {
@@ -13,7 +13,7 @@ export async function getReviews(category?:string, identifier?:string) {
   let url = `${baseURL}reviews`;
 
     if (category && identifier) {
-        url += `?${category}=${identifier}`;
+        url += `?${category}=${encodeURIComponent(identifier)}`;
     }
 
     console.log("Fetching:", url);
@@ -30,12 +30,12 @@ export async function getReviews(category?:string, identifier?:string) {
 //   return review;
 // }
 
-export async function searchReviews(query:string) {
-  const response = await fetch(baseURL + `reviews?search=${query}`);
+export async function searchReviews(query:string): Promise<SearchResults> {
+  const response = await fetch(baseURL + `reviews/search?query=${encodeURIComponent(query)}`);
   console.log("response", response);
-  const reviews = await convertToJson(response) as Review[];
-  console.log(reviews);
-  return reviews;
+  const results = await convertToJson(response) as SearchResults;
+  console.log(results);
+  return results;
 }
 
 export async function createReview(review:CreateReviewRequest) {

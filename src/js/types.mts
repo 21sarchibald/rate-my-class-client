@@ -89,3 +89,12 @@ export interface ReviewErrors {
   type?: string;
   description?: string;
 }
+
+export interface SearchResults {
+  courses: {
+      courseId: string;
+      courseCode: string;
+      courseName: string;
+  }[];
+  professors: string[];
+}
