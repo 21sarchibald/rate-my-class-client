@@ -45,7 +45,7 @@ async function searchHandler(event: Event) {
     gap: 1rem;
     width: 500px;
     max-width: 500px;
-    margin: 2rem auto;
+    /* margin: 2rem auto; */
     padding: .25rem .5rem; 
     border: 1px solid #ccc;
     border-radius: 50px;
