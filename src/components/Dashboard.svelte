@@ -93,20 +93,6 @@
         border: 1px solid #ccc;
         border-radius: 8px;
 
-        .edit{
-            background-color: #6ea7f8;
-            color: #303030;
-            border: none;
-            border-radius: 1rem;
-            padding: 0.5rem 1.5rem;
-            cursor: pointer;
-
-            &:hover{
-                background-color: #486f9e;
-                color: #f4f3f3;
-            }
-        }
-
         .user-info{
             .info-card{
                 padding: 1rem;
