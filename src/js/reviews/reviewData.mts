@@ -23,12 +23,6 @@ export async function getReviews(category?:string, identifier?:string) {
     
 }
 
-// export async function getReviewById(id:string) {
-//   const response = await fetch(baseURL + `reviews/${id}`);
-//   const review = await convertToJson(response) as Review;
-//   console.log(review)
-//   return review;
-// }
 
 export async function searchReviews(query:string): Promise<SearchResults> {
   const response = await fetch(baseURL + `reviews/search?query=${encodeURIComponent(query)}`);

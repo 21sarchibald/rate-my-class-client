@@ -11,6 +11,15 @@ export interface UserStore {
     token:string
 }
 
+export interface PublicUser {
+    _id: string;
+    name: string;
+    username: string;
+    email: string;
+    major: string;
+    userType: "Admin" | "Student";
+}
+
 export interface Registration {
     _id:string
     name:string
@@ -30,7 +39,7 @@ export interface FormErrors {
 }
 
 export interface Review {
-  _id?:string;
+  _id:string;
   userId: string;
   courseCode: string;
   courseName: string;
