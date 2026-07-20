@@ -1,11 +1,13 @@
 ---
+import ClassCardAstroComponent from "../components/ClassCard.svelte";
+import FilterComponentAstroComponent from "../components/FilterComponent.svelte";
+import HomeAstroComponent from "../components/Home.svelte";
 import Layout from "../layout/Layout.astro";
-const title = "Home";
+const title = "Welcome to Rate My Class";
 ---
 
 <Layout title={title} >
 	<body>
-        <a href="/reviews/reviewForm">Create Review</a>
-		
+		<HomeAstroComponent client:load/>
 	</body>
 </Layout>
