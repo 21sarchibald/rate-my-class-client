@@ -30,7 +30,7 @@ export interface FormErrors {
 }
 
 export interface Review {
-  _id?:string;
+  _id:string;
   userId: string;
   courseCode: string;
   courseName: string;

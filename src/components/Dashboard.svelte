@@ -18,7 +18,7 @@
             reviews = allReviews;
         } else {
             reviews = allReviews.filter(
-                review => review.userId.toString() === auth.userStore.user?._id
+                (review:Review) => review.userId.toString() === auth.userStore.user?._id
             );
         }
     });
@@ -27,7 +27,7 @@
 </script>
 
 <main>
-    <h1>Hello {auth.userStore.user?.username} </h1>
+    <h1>Hello {auth.userStore.user?.name} </h1>
 
     {#if auth.userStore.user?.userType == "Admin"}
         <h2>Admin Dashboard</h2>

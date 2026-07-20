@@ -58,3 +58,20 @@ export async function updateReview(token: string, id: string, courseCode: string
             throw error;
         }
 }
+
+export async function deleteReview(token: string, id: string) {
+    const response = await fetch(`${baseURL}reviews/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error?.message ?? "Delete failed");
+    }
+
+    return data;
+}
