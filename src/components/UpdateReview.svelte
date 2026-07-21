@@ -1,3 +1,5 @@
+<!-- Add .in-vaid class -->
+
 <script lang="ts">
     import { onMount } from "svelte";
     import authSvelte from "../js/auth.svelte";
@@ -255,20 +257,20 @@
             {#if hasSubmittedAtLeastOnce && errors.rating}
                 <span class="error">{errors.rating}</span>
                 {/if}
-            </label>
-            <label class="grade">
-                Grade:
-                <select bind:value={gradeReceived} required>
-                    <option value="">Select grade</option>
-                    <option value="A">A</option>
-                    <option value="A-">A-</option>
-                    <option value="B+">B+</option>
-                    <option value="B">B</option>
-                    <option value="B-">B-</option>
-                    <option value="C+">C+</option>
-                    <option value="C">C</option>
-                    <option value="C-">C-</option>
-                    <option value="D+">D+</option>
+        </label>
+        <label class="grade">
+            Grade:
+            <select bind:value={gradeReceived} required>
+                <option value="">Select grade</option>
+                <option value="A">A</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="B-">B-</option>
+                <option value="C+">C+</option>
+                <option value="C">C</option>
+                <option value="C-">C-</option>
+                <option value="D+">D+</option>
                 <option value="D">D</option>
                 <option value="D-">D-</option>
                 <option value="F">F</option>

@@ -7,21 +7,29 @@
   import { onMount } from "svelte";
     import { getCourseById } from "../js/courseData.mts";
     import { getReviews } from "../js/reviews/reviewData.mjs";
-    import type { Review } from "../js/types.mjs";
+    import type { Review, Course } from "../js/types.mjs";
   import ReviewCard from "./ReviewCard.svelte";
 
+    let nonduplicatedReviews:Review[] = $state([]);
     let reviews:Review[] = $state([]);
+    let courses:Course[] = $state([]);
 
     async function getTopRatedClasses() {
         let ratings = ["5", "4", "3", "2", "1"];
         let seenCourses:string[] = [];
-
         for (const r of ratings) {
             const data = await getReviews("rating", r);
             if (data.length >= 1) {
                 for (const d of data) {
-                    if (!seenCourses.includes(d.courseCode)) {
+                    const course = await getReviews("courseCode", d.courseCode);
+                    // for (const c of course) {
+                        //     let reviewsInCourse = c.
+                        // }
+                        // console.log(`There are ${reviews.length} ${r} start reviews.`)
+                        
+                        if (!seenCourses.includes(d.courseCode)) {
                         reviews.push(d);
+                        nonduplicatedReviews.push(d);
                         seenCourses.push(d.courseCode);
                     }
                     if (reviews.length == 3) {
