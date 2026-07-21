@@ -222,7 +222,7 @@ console.log("ReviewFormComponent loaded");
         </select>
     </label>
     <label>
-        Online:
+        Class Type:
         <select name="classType" id="classType" bind:value={type} required>
             <option value="">Select class type</option>
             <option value="In-Person">In-Person</option>
