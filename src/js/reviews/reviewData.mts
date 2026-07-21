@@ -23,6 +23,27 @@ export async function getReviews(category?:string, identifier?:string) {
     
 }
 
+export async function getReviewCountForCourse(courseCode: string) {
+    const data = await getReviews("courseCode", courseCode)
+    return data.length
+
+}
+
+export async function getClassRating(courseCode: string) {
+    let totalRating = 0;
+    const data = await getReviews("courseCode", courseCode)
+    const numRatings = data.length;
+    for (const d of data) {
+      const rating = d.rating;
+      totalRating += rating 
+    }
+    if (!numRatings) {
+      totalRating = 0;
+    } else {
+      totalRating /= numRatings;
+    }
+    return totalRating;
+}
 
 export async function searchReviews(query:string): Promise<SearchResults> {
   const response = await fetch(baseURL + `reviews/search?query=${encodeURIComponent(query)}`);
@@ -49,3 +70,4 @@ export async function createReview(review:CreateReviewRequest) {
         throw new Error(data.error);
     }
 }
+

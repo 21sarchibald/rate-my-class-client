@@ -2,6 +2,8 @@
 TO-DO: Connect search review logic to filter
 -->
 <script lang="ts">
+    import { searchReviews } from "../js/reviews/reviewData.mts";
+    
 
 </script>
 

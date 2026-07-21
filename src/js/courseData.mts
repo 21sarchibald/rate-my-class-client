@@ -14,3 +14,10 @@ export async function getCourseById(courseId:string) {
       .then(convertToJson)
       .then((data) => data);
   }
+
+export async function getAllCourses() {
+    return await fetch(baseURL + `reviews/course`)
+      .then(convertToJson)
+      .then((data) => data);
+  };
+
