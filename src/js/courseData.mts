@@ -10,13 +10,13 @@ function convertToJson(res:Response) {
 }
 
 export async function getCourseById(courseId:string) {
-    return await fetch(baseURL + `reviews/course/${courseId}`)
+    return await fetch(baseURL + `courses/${courseId}`)
       .then(convertToJson)
       .then((data) => data);
   }
 
 export async function getAllCourses() {
-    return await fetch(baseURL + `reviews/course`)
+    return await fetch(baseURL + `courses`)
       .then(convertToJson)
       .then((data) => data);
   };

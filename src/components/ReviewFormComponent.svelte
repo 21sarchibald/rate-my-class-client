@@ -138,7 +138,7 @@ console.log("ReviewFormComponent loaded");
     }
 
 </script>
-
+<h1>Create Review</h1>
 <form class="review-form" action="/reviews/create" method="POST" onsubmit={handleSubmit}>
     <label>
         Class Code:
@@ -236,13 +236,16 @@ console.log("ReviewFormComponent loaded");
     </label>
     <label>
         Description:
-        <textarea name="description" bind:value={description} placeholder="Tell other students about your experience..." required></textarea>
+        <textarea class="description" name="description" bind:value={description} placeholder="Tell other students about your experience..." required></textarea>
     </label>
     
     <button type="submit">Submit</button>
 </form>
 
 <style>
+    h1 {
+        text-align: center;
+    }
     .review-form {
       display: flex;
       flex-direction: column;
@@ -252,20 +255,40 @@ console.log("ReviewFormComponent loaded");
       padding: 2rem;
       border: 1px solid #ccc;
       border-radius: 8px;
+      background-color: var(--tertiary-color);
     }
     label {
       display: flex;
       flex-direction: row;
       font-weight: bold;
+      margin-right: 0.5rem;
     }
     input {
       margin-left: 0.5rem;
       font-size: 1rem;
+      border-radius: 50px;
+      padding: 0.3rem;
+    }
+    select {
+        border-radius: 50px;
+        margin-left: 0.5rem;
+    }
+    .description {
+        width: 100%;
+        min-height: 50px;
+        margin-left: 0.5rem;
+        border-radius: 8px;
     }
     button {
       padding: 0.5rem;
       font-size: 1rem;
       cursor: pointer;
+      border-radius: 50px;
+      background-color: var(--secondary-color);
+      color: var(--light-grey);
+      &:hover {
+        background-color: #64835b;
+      }
     }
     /* .error {
       color: red;

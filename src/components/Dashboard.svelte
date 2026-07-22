@@ -42,6 +42,7 @@
     <div class="content">
         <div class="reviews">
             <h3>Reviews</h3>
+            <a href="/reviews/create">Create Review</a>
             <div class="review-card">
                 {#each reviews as review}
                     <ReviewCard {review} />
@@ -68,11 +69,11 @@
                     {#each users as user}
 
                         <div class="user-card">
-                            <p>Name: {user.name}</p>
-                            <p>Email: {user.email}</p>
-                            <p>Major: {user.major}</p>
-                            <p>Username: {user.username}</p>
-                            <p>Role: {user.userType}</p>
+                            <p>Name: <strong>{user.name}</strong></p>
+                            <p>Email: <strong>{user.email}</strong></p>
+                            <p>Major: <strong>{user.major}</strong></p>
+                            <p>Username: <strong>{user.username}</strong></p>
+                            <p>Role: <strong>{user.userType}</strong></p>
                         </div>
 
                     {/each}
@@ -83,6 +84,12 @@
 </main>
 
 <style>
+    h1 {
+        text-align: center;
+    }
+    .reviews a {
+        color: var(--secondary-color);
+    }
     .content{
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -92,15 +99,16 @@
         padding: 2rem;
         border: 1px solid #ccc;
         border-radius: 8px;
+        background-color: var(--light-grey);
 
         .user-info{
             .info-card{
                 padding: 1rem;
                 border: 1px solid #ccc;
                 border-radius: 8px;
-                background-color: #f9f9f9;
+                background-color: var(--secondary-color);
+                color: var(--light-grey);
             }
-
             .users{
                 margin-top: 2rem;
                 .user-card{
@@ -114,4 +122,5 @@
             
         }
     }
+
 </style>

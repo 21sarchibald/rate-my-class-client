@@ -165,7 +165,7 @@
     }); 
 
 </script>
-
+<h1>Edit Review</h1>
 {#if isLoading }
     <h3>Loading review.....</h3>
 {:else if isSuccess}
@@ -181,7 +181,7 @@
                     <p>{errorMessage}</p>
                 </div>
             {/if}
-        <div class="form-group1">
+        <!-- <div class="form-group1"> -->
 
             <label>
                 Class Code:
@@ -197,7 +197,7 @@
                 <span class="error">{errors.courseName}</span>
                 {/if}
             </label>
-        </div>
+        <!-- </div> -->
             <label>
                 Professor:
                 <input type="text" name="professor" bind:value={professor} required />
@@ -205,7 +205,7 @@
                 <span class="error">{errors.professor}</span>
                 {/if}
             </label>
-            <div class="form-group2">
+            <!-- <div class="form-group2"> -->
 
                 <label class="semester">
                     Semester:
@@ -224,11 +224,11 @@
                 <label>
                     Block:
                     <input type="checkbox" name="isBlock" bind:checked={isBlock} />
-                    {#if hasSubmittedAtLeastOnce && errors.isBlock}
-                    <span class="error">{errors.isBlock}</span>
-                    {/if}
+                    <!-- {#if hasSubmittedAtLeastOnce && errors.isBlock}
+                        <span class="error">{errors.isBlock}</span>
+                    {/if} -->
                 </label>
-            </div>
+            <!-- </div> -->
         <label class="year">
             Year:
             <select bind:value={selectedYear}>
@@ -328,49 +328,53 @@
 {/if}
 
 <style>
+    h1 {
+        text-align: center;
+    }
     .review-form {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        max-width: 600px;
-        margin: 2rem auto;
-        padding: 2rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-    }
-    .form-group1 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-    }
-    .form-group2 {
-        display: flex;
-        flex-direction: row;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: var(--tertiary-color);
     }
     label {
-        display: flex;
-        flex-direction: column;
-        font-weight: bold;
-
+      display: flex;
+      flex-direction: row;
+      font-weight: bold;
+      margin-right: 0.5rem;
+      /* margin-bottom: 0.5rem; */
     }
-    .semester {
-        display: flex;
-        flex-direction: row;
+    input {
+      margin-left: 0.5rem;
+      font-size: 1rem;
+      border-radius: 50px;
+      padding: 0.3rem;
     }
-    input, select, .description {
-        margin-top: 0.5rem;
-        padding: 0.5rem;
-        font-size: 1rem;
-        box-sizing: border-box;
-        width: 100%;
+    select {
         border-radius: 50px;
+        margin-left: 0.5rem;
+    }
+    .description {
+        width: 100%;
+        min-height: 50px;
+        margin-left: 0.5rem;
+        border-radius: 8px;
     }
     button {
-        padding: 0.5rem;
-        font-size: 1rem;
-        cursor: pointer;
-        background-color: #44613c;
-        color: #f4f3f3;
+      padding: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 50px;
+      background-color: var(--secondary-color);
+      color: var(--light-grey);
+      &:hover {
+        background-color: #64835b;
+      }
     }
     .error {
         color: red;
