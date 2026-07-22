@@ -25,7 +25,8 @@ export async function getReviews(category?:string, identifier?:string) {
 
 export async function getReviewCountForCourse(courseCode: string) {
     const data = await getReviews("courseCode", courseCode)
-    return data.length
+    const count:number = data.length;
+    return count;
 
 }
 

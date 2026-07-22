@@ -56,6 +56,11 @@
             <button onclick={() => handleDelete()}>Delete</button>
             {/if}
         </div>
+        <div class="edit-button">
+            {#if auth.userStore.user?._id === review.userId.toString()}
+                <a href="/reviews/edit/?_id={review._id}">Edit Review</a>
+            {/if}
+        </div>
     </div>
     <div class="review-main">
 
@@ -209,6 +214,13 @@
             color: #f4f3f3;
         }
 
+    }
+    .edit-button a {
+        background-color: #6ea7f8;
+        color: #303030;
+        border-radius: 1rem;
+        font-size: small;
+        padding: 0.5rem;
     }
 
   </style>

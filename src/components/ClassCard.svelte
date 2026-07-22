@@ -4,47 +4,54 @@
   -->
 
 <script lang="ts">
-  import { onMount } from "svelte";
-    import { getCourseById } from "../js/courseData.mts";
-    import { getReviews } from "../js/reviews/reviewData.mjs";
+    import { onMount } from "svelte";
+    import { getCourseById, getAllCourses } from "../js/courseData.mts";
+    import { getReviews, getReviewCountForCourse } from "../js/reviews/reviewData.mjs";
     import type { Review, Course } from "../js/types.mjs";
-  import ReviewCard from "./ReviewCard.svelte";
+    import ReviewCard from "./ReviewCard.svelte";
+    import { string } from "astro:schema";
+
+    interface CourseData {
+        courseCode: string,
+        reviewCount: number,
+        professor: string,
+        rating: number,
+        courseName: string
+    }
 
     let nonduplicatedReviews:Review[] = $state([]);
     let reviews:Review[] = $state([]);
     let courses:Course[] = $state([]);
+    let courseId = $state("");
+    let reviewCount = $state(0);
+    let count:CourseData[] = $state([]);
+    
+    async function trending() {
+        const allReviews = await getReviews();
+        const seenCourses: string[] = [];
+        const trendingList: CourseData[] = [];
 
-    async function getTopRatedClasses() {
-        let ratings = ["5", "4", "3", "2", "1"];
-        let seenCourses:string[] = [];
-        for (const r of ratings) {
-            const data = await getReviews("rating", r);
-            if (data.length >= 1) {
-                for (const d of data) {
-                    const course = await getReviews("courseCode", d.courseCode);
-                    // for (const c of course) {
-                        //     let reviewsInCourse = c.
-                        // }
-                        // console.log(`There are ${reviews.length} ${r} start reviews.`)
-                        
-                        if (!seenCourses.includes(d.courseCode)) {
-                        reviews.push(d);
-                        nonduplicatedReviews.push(d);
-                        seenCourses.push(d.courseCode);
-                    }
-                    if (reviews.length == 3) {
-                        return;
-                    }
-                }
+        for (const review of allReviews) {
+            if (seenCourses.includes(review.courseCode)) continue;
+            seenCourses.push(review.courseCode);
+            const reviewCount = allReviews.filter((r:Review) => r.courseCode === review.courseCode).length;
 
-            } 
-        };
-        
+            if (review) {
+                trendingList.push({
+                    courseCode: review.courseCode,
+                    reviewCount: reviewCount,
+                    professor: review.professor,
+                    rating: review.rating,
+                    courseName: review.courseName
+                });
+            }
+        }
+
+        count = trendingList.sort((a, b) => b.reviewCount - a.reviewCount);
     }
     
-    
         onMount(async () => {
-            await getTopRatedClasses();
+            await trending();
         })
 </script>
 
@@ -52,13 +59,13 @@
 <div class="class-card">
     <h2>Trending Classes</h2>
     <div class="review-cards">
-        {#each reviews as review}
+        {#each count.slice(0,3) as review}
             <div class="course-info">
                 <p class="rating"><strong>{review.rating}</strong>/5</p>
                 <div class="class">
                     <h3>{review.courseName}</h3>
                     <p><strong>Professor </strong> {review.professor}</p>
-                    <p>3,000 reviews</p>
+                    <p>{review.reviewCount} reviews</p>
                 </div>
             </div>
         {/each}
@@ -83,8 +90,19 @@
         padding: 1rem;
         align-items: center;
         box-shadow: -1px 3px 5px 0px rgba(128, 128, 128, 0.149);
+        transition: 0.3s ease-in;
+        &:hover {
+            background-color: #cbc3b7;
+
+        }
         .class {
             text-align: center;
+            h3 {
+                color: var(--secondary-color);
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
         }
         .rating {
             background-color: var(--secondary-color);
